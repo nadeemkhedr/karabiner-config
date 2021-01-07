@@ -175,7 +175,7 @@
 
              :shift-mode {:key :d} ; "s" on colemak
              :movement-mode {:key :f} ; "t" on colemak
-             :delete-mode {:key :j}
+             :delete-mode {:key :j} ; "n" on colemak
 
              :emoji-mode {:key :z}
 
@@ -222,7 +222,7 @@
                  [:left_option :left_option nil {:alone [:!Cw]}]
                  [:right_option :focus_omnibar]
 
-                 [:condi :brave :escape-mode]
+                 [:condi :brave :a-mode]
                  [:-f :brave_full_screen]
                  [:-n :prev_tab]
                  [:-e :next_tab]
@@ -306,23 +306,24 @@
                  ;
                  ]}
 
-        {:des "launch"
+        {:des "escape-mode"
          :rules
-         [:launch-mode
+         [:escape-mode
           [:-d [:launch "Discord"]]
           [:-i [:launch "iTerm"]]
+          [:-c :!!c]
           ;restart karabiner
           [:-k "launchctl kickstart -k org.pqrs.karabiner.karabiner_console_user_server"]
           [:-m [:launch "Spotify"]]
           [:-s [:launch "Slack"]]
-          [:-b [:launch "Brave"]] ;
-          [:-z [:launch "Visual Studio Code"]];viZ
-          [:comma [:launch "Messages"]];
+          [:-b [:launch "Brave"]]
+          [:-z [:launch "Visual Studio Code"]]
+          [:comma [:launch "Messenger"]]
           ;
           ]}
 
 
-        {:des "delete"
+        {:des "delete 'n'"
          :rules [:delete-mode
                  [:hyphen :delete_line :code]
                  [:hyphen :!Cdelete_or_backspace]
@@ -353,7 +354,7 @@
                  ;
                  ]}
 
-        {:des "homerow shift"
+        {:des "homerow shift 's'"
          :rules [:shift-mode
                  [:##j :!Sleft_arrow]
                  [:##k :!Sdown_arrow]
