@@ -99,7 +99,12 @@
              :delay "osascript -e 'delay \"%s\"'"
              :km "osascript -e 'tell application \"Keyboard Maestro Engine\" to do script \"%s\"'"
              :type "osascript -e 'tell application \"System Events\" to keystroke \"%s\"'"
-             :launch "osascript -e 'tell application \"%s\" to activate'"
+             :launch "osascript -e '
+                        tell application \"%s\" 
+                           reopen
+                           activate
+                        end tell
+                        '"
              :open-brave "osascript -e '
                         set address to \"%s\"
                         
