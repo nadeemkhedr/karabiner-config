@@ -81,13 +81,16 @@
        :emoji_picker {:key :spacebar :modi :ct} ;!CTspacebar
        :take_screenshot {:key :6 :modi :cs} ;!CS6
        :toggle_screen_brush {:key :tab :modi :option} ;!Otab
-
+       :switch_windows {:key :grave_accent_and_tilde :modi :command}
        ;brave
        :open_dev_tools {:key :i :modi :co} ;:!COl
        :brave_full_screen {:key :f :modi :ct}
        :focus_omnibar {:key :l :modi :command}
        :next_tab {:key tab :modi :control}
        :prev_tab {:key tab :modi :ts}
+       :new_tab {:key t :modi :command}
+       :close_tab {:key w :modi :command}
+       :private_mode {:key n :modi :cs}
        ;
        }
  
@@ -166,31 +169,20 @@
           ;
           }
  :simlayers {;
-             :a-mode {:key :a}
-             :r-mode {:key :s}
-             :tab-mode {:key :tab}
-             :query-mode {:key :q}
+             :a-mode {:key :a} ; app specific // tmux, chrome
+             :r-mode {:key :s} ; app specific // ctrl for vim
 
-             :hyphen-mode {:key :hyphen :alone {:key :hyphen}}
+             :m-mode {:key :m} ; music mode
+             :l-mode {:key :u} ; window managment (moom)
+             :tab-mode {:key :tab} ; chrome tabs
+             :emoji-mode {:key :z}
+             :open-mode {:key :semicolon}; "o" in colemak, project open
 
              :shift-mode {:key :d} ; "s" on colemak
              :movement-mode {:key :f} ; "t" on colemak
              :delete-mode {:key :j} ; "n" on colemak
 
-             :emoji-mode {:key :z}
-
-             :equals-mode {:key :equal_sign}
-             :slash-mode {:key :slash}
-
-             :semicolon-mode {:key :semicolon}
-             :backslash-mode {:key :backslash}
-
              :spacebar-mode {:key :spacebar}
-
-             :modify-mode {:key :m} ;
-             :open-mode {:key :semicolon}; "o" in colemak
-             :wrap-mode {:key :w} ;
-             :window-mode {:key :u};"l" in colemak, use moom to manage the windows
              ;
              }
 
@@ -220,33 +212,45 @@
          :rules [:brave
                  [:left_command :left_command nil {:alone [:!Ct]}]
                  [:left_option :left_option nil {:alone [:!Cw]}]
-                 [:right_option :focus_omnibar]
 
                  [:condi :brave :a-mode]
                  [:-f :brave_full_screen]
                  [:-n :prev_tab]
                  [:-e :next_tab]
+                 [:-x :close_tab]
+                 [:-p :private_mode]
+                 [:-o :switch_windows]
+                 [:-l :focus_omnibar]
                  ;
                  ]}
 
         {:des "code"
          :rules [:code
-          [:condi :code :r-mode] ;control key
-          [:-h :!Th]
-          [:-j :!Tj]
-          [:-k :!Tk]
-          [:-l :!Tl]
-         ;
-         ]}
-
-        {:des "iterm"
-         :rules [:iterm
-          [:condi :iterm :r-mode] ;control key
+          [:condi :code :r-mode] ;control key - terminal
           [:-h :!Th]
           [:-j :!Tj]
           [:-k :!Tk]
           [:-l :!Tl]
           [:-c :!Tc]
+          [:-o :!To]
+          [:-i :!Ti]
+          [:-v :!Tv]
+          [:-x :!Tx]
+         ;
+         ]}
+
+        {:des "iterm"
+         :rules [:iterm
+          [:condi :iterm :r-mode] ;control key - terminal
+          [:-h :!Th]
+          [:-j :!Tj]
+          [:-k :!Tk]
+          [:-l :!Tl]
+          [:-c :!Tc]
+          [:-o :!To]
+          [:-i :!Ti]
+          [:-v :!Tv]
+          [:-x :!Tx]
 
           [:condi :iterm :a-mode] ;tmux keys
           [:-q [:!Ta :1]] ; go to window 1
@@ -258,12 +262,12 @@
           [:-k [:!Ta :k]]
           [:-h [:!Ta :h]]
           [:-l [:!Ta :l]]
-          [:-z [:!Ta :z]] ; toggle max on a pane
+          [:-z [:!Ta :z]] ; toggle max/k on a pane
           [:-x [:!Ta :x]] ; kill pane
           [:-c [:!Ta :c]] ; create new window
           [:-r [:!Ta :!S5]] ; split h
           [:-s [:!Ta :!Squote]] ; split v
-          [:return [:!Ta :!Squote]] ; split v
+          [:return_or_enter [:!Ta :return_or_enter ]] ; visual mode
          ;
          ]}
 ;
@@ -309,9 +313,11 @@
         {:des "escape-mode"
          :rules
          [:escape-mode
+          [:-a :!!a]
           [:-d [:launch "Discord"]]
           [:-i [:launch "iTerm"]]
           [:-c :!!c]
+          [:-p :!!p]
           ;restart karabiner
           [:-k "launchctl kickstart -k org.pqrs.karabiner.karabiner_console_user_server"]
           [:-m [:launch "Spotify"]]
@@ -319,6 +325,7 @@
           [:-b [:launch "Brave"]]
           [:-z [:launch "Visual Studio Code"]]
           [:comma [:launch "Messenger"]]
+          [:-w [:launch "WhatsApp"]]
           ;
           ]}
 
@@ -379,23 +386,7 @@
                  ;
                  ]}
 
-        {:des "homerow control"
-         :rules [:hyphen-mode
-                ;  [:h {:mkey {:hwheel 60}}]
-                ;  [:j {:mkey {:vwheel 100}}]
-                ;  [:##k {:mkey {:vwheel -60}}]
-                ;  [:l {:mkey {:hwheel -60}}]
-                 [:##d :left_shift]
-                 [:##j :!Fleft_arrow]
-                 [:##k :!Fdown_arrow]
-                 [:##l :!Fup_arrow]
-                 [:##semicolon :!Fright_arrow]
-                 ;
-                 ]}
-
-
         {:des "spacebar"
-        
          :rules [:spacebar-mode
                  [:-a :!S1]
                  [:-r :!Shyphen]
@@ -407,11 +398,11 @@
                  [:-e :close_brace]
                  [:-i :equal_sign]
                  [:-o :greater_than]
+                 [:-l :open_paren]
+                 [:-u :close_paren]
 
                  [:-m :open_bracket]
                  [:comma :close_bracket]
-                 [:period :open_paren]
-                 [:slash :close_paren]
 
                 ;; [:j :open_brace]
                 ;; [:k :close_brace]
@@ -436,17 +427,18 @@
         {:des "tab-mode"
          :rules [:tab-mode
                  ;open urls
+                 [:-e [:open-brave "engadget.com"]]
                  [:-g [:open-brave "mail.google.com"]]
                  [:-k [:open-brave "github.com/search?q=extension%3A.edn+filename%3Akarabiner.edn&type=Code&ref=advsearch&l=&l="]]
                  [:-l [:open-brave "localhost:3000"]]
                  [:-m [:open-brave "monkeytype.com"]]
                  [:-t [:open-brave "twitter.com"]]
                  [:-y [:open-brave "youtube.com"]]
-;
+                 ;
                  ]}
 
-        {:des "window-mode (global)"
-         :rules [:window-mode
+        {:des "l-mode (window managment)"
+         :rules [:l-mode
                  ;open urls
                  [:-q :!!1]
                  [:-w :!!2]
@@ -457,7 +449,17 @@
                  [:-z :!!7]
                  [:-x :!!8]
                  [:-c :!!9]
-;
+                 ;
+                 ]}
+
+        {:des "m-mode (music player)"
+         :rules [:m-mode
+                 [:-t :vk_consumer_play]
+                 [:-s :vk_consumer_next]
+                 [:-r :vk_consumer_previous]
+                 [:-f :volume_increment]
+                 [:-w :volume_decrement]
+                 ;
                  ]}
 
         {:des "colemak"
