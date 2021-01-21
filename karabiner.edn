@@ -79,17 +79,27 @@
        :less_than {:key :comma :modi :shift}
        :greater_than {:key :period :modi :shift}
        :emoji_picker {:key :spacebar :modi :ct} ;!CTspacebar
-       :take_screenshot {:key :6 :modi :cs} ;!CS6
-       :toggle_screen_brush {:key :tab :modi :option} ;!Otab
        :switch_windows {:key :grave_accent_and_tilde :modi :command}
+       :prev_app {:key :tab :modi :cs :lazy true}
+       :next_app {:key :tab :modi :command :lazy true}
+
+
+       ;vscode
+       :command_palette {:key :p :modi :command}
+       :go_to_file {:key :p :modi :cs}
+
+       :prev_code_tab [{:key k :modi :command} 
+                       {:key left_arrow :modi :co}]
+       :next_code_tab [{:key k :modi :command}
+                      {:key right_arrow :modi :co}]
        ;brave
-       :open_dev_tools {:key :i :modi :co} ;:!COl
-       :brave_full_screen {:key :f :modi :ct}
-       :focus_omnibar {:key :l :modi :command}
        :next_tab {:key tab :modi :control}
        :prev_tab {:key tab :modi :ts}
+       :open_dev_tools {:key :i :modi :co} ;:!COl
+       :focus_omnibar {:key :l :modi :command}
        :new_tab {:key t :modi :command}
        :close_tab {:key w :modi :command}
+       :refresh {:key r :modi :command}
        :private_mode {:key n :modi :cs}
        ;
        }
@@ -136,7 +146,6 @@
                                 keystroke \"v\" using command down
                         end tell
                 '"
-             :restream "osascript -e 'tell application \"Restream Chat\" to activate'"
              :zsh "zsh ~/.zfunc/'%s'"
              :modify "osascript -e '
                         tell application \"System Events\" to keystroke \"c\" using {command down}
@@ -146,7 +155,6 @@
                         set the clipboard to output                    
                         tell application \"System Events\" to keystroke \"v\" using {command down}
                      '"
-              :test "osascript -e 'say \"poop\"'"
               :query "osascript -e '
                       tell application id \"com.runningwithcrayons.Alfred\" to run trigger \"scripted-list\" in workflow \"com.johnlindquist.scripted-list\" with argument \"%s\"
                       '"
@@ -158,6 +166,7 @@
                 :code ["com.microsoft.VSCode"]
                 :slack ["com.tinyspeck.slackmacgap"]
                 :iterm ["com.googlecode.iterm2"]
+                :messenger ["com.facebook.archon"]
                 ;
                 }
 ; Layers Are Typically "Thumb Keys" or "Pinky Keys"
@@ -189,7 +198,8 @@
  :main [;
         
         {:des "global"
-         :rules [[:f8 :toggle_screen_brush]
+         :rules [[:left_shift :left_shift nil {:alone :delete_or_backspace}]
+                 [:right_shift :right_shift nil {:alone :delete_forward}]
                  ;
                  ]}
 
@@ -200,32 +210,48 @@
                  ;
                  ]}
 
+        {:des "messenger"
+         :rules [;
+                 [:condi :messenger]
+                 [:left_command :left_command nil {:alone :!Ck}]
+                 ;
+                 ]}
+
         {:des "open files"
          :rules [:open-mode
                  [:-c [:code-project "~/.config"]]
                  [:-k [:code-project "~/work/karabiner/" "~/work/karabiner/karabiner.edn"]]
-
                  ;
                  ]}
 
         {:des "brave"
          :rules [:brave
                  [:left_command :left_command nil {:alone [:!Ct]}]
-                 [:left_option :left_option nil {:alone [:!Cw]}]
+                 ;;[:left_option :left_option nil {:alone [:!Cw]}]
 
                  [:condi :brave :a-mode]
-                 [:-f :brave_full_screen]
+                 [:-d :open_dev_tools]
                  [:-n :prev_tab]
                  [:-e :next_tab]
+                 [:-t :new_tab]
+                 [:-r :refresh]
                  [:-x :close_tab]
                  [:-p :private_mode]
-                 [:-o :switch_windows]
                  [:-l :focus_omnibar]
                  ;
                  ]}
 
         {:des "code"
          :rules [:code
+          [:left_command :left_command nil {:alone :command_palette}]
+          [:right_command :right_command nil {:alone :go_to_file}]
+
+
+          [:condi :code :a-mode]
+          [:-t :!Tgrave_accent_and_tilde] ;a-t toggle terminal
+          [:-n :prev_code_tab]
+          [:-e :next_code_tab]
+
           [:condi :code :r-mode] ;control key - terminal
           [:-h :!Th]
           [:-j :!Tj]
@@ -267,41 +293,27 @@
           [:-c [:!Ta :c]] ; create new window
           [:-r [:!Ta :!S5]] ; split h
           [:-s [:!Ta :!Squote]] ; split v
+
+          [:-n [:!Ta :!Th]] ; prev window (oh-my-tmux)
+          [:-e [:!Ta :!Tl]] ; next window (oh-my-tmux)
           [:return_or_enter [:!Ta :return_or_enter ]] ; visual mode
          ;
          ]}
 ;
         {:des "emoji"
          :rules [:emoji-mode
-                 [:-a [:paste ""]] ;                
-                 [:-b [:paste "🐛"]] ;bug
-                 [:-c [:paste "👏"]] ;clap
-                 [:-d [:paste "🧐"]] ;dignified
-                 [:-e :emoji_picker] 
-                 [:-f [:paste "️✨"]] ;feat
-                 [:-g [:paste "😬"]] ;grimace
-                 [:-h [:paste "😍"]] ;heart-eyes
-                 [:-i [:paste "👀"]] ;I
-                 [:-j [:paste "😂"]] ;joking
-                 [:-k [:paste ""]] ;
-                 [:-l [:paste "❤️"]] ;love
-                 [:-m [:paste "🤯"]] ;mind blown 
-                 [:-n :emoji_picker] ;
-                 [:-o [:paste "💩"]] ;pOop
-                 [:-q [:paste "🤫"]] ;quiet
-                 [:-r [:paste "🏎"]] ;racecar
-                 [:-s [:paste "😢"]] ;sad
-                 [:-p [:paste "🎉"]] ;tada
-                 [:-u [:paste "🤷‍♂️"]] ;stars
-                 [:-v [:paste "😎"]] ;very cool
-                 [:-w [:paste "😉"]] ;wink:
-                 [:-x [:paste "😵"]] ;x-eyes
-                 [:-y [:paste "😅"]] ;sweatY
                  [:left_command [:paste "👍"]]
                  [:left_option [:paste "👎"]]
+                 [:-b [:paste "🐛"]] ;bug
+                 [:-p [:paste "🎉"]] ;tada
+                 [:-l [:paste "❤️"]] ;love
+                 [:-j [:paste "😂"]] ;joking
+                 [:-h [:paste "😀"]] ;happy
+                 [:-r [:paste "🤣"]] ;rofl
+                 [:-s [:paste "😢"]] ;sad
+                 [:-c [:paste "😭"]] ;cry
                  ;
                  ]}
-
 
         {:des "caps_lock"
          :rules [:caps_lock-mode
@@ -313,19 +325,22 @@
         {:des "escape-mode"
          :rules
          [:escape-mode
-          [:-a :!!a]
+          [:-a :!!a] ;toggle top menubar
           [:-d [:launch "Discord"]]
           [:-i [:launch "iTerm"]]
-          [:-c :!!c]
-          [:-p :!!p]
+          [:-c :!!c] ;open fantastical
+          [:-p :!!p] ;take a screenshot with snagit
           ;restart karabiner
           [:-k "launchctl kickstart -k org.pqrs.karabiner.karabiner_console_user_server"]
           [:-m [:launch "Spotify"]]
           [:-s [:launch "Slack"]]
           [:-b [:launch "Brave"]]
-          [:-z [:launch "Visual Studio Code"]]
+          [:-o [:launch "Visual Studio Code"]]
           [:comma [:launch "Messenger"]]
           [:-w [:launch "WhatsApp"]]
+          [:-x :!Ch] ;hide app
+          [:-n :prev_app]
+          [:-e :next_app]
           ;
           ]}
 
@@ -457,8 +472,18 @@
                  [:-t :vk_consumer_play]
                  [:-s :vk_consumer_next]
                  [:-r :vk_consumer_previous]
+
                  [:-f :volume_increment]
                  [:-w :volume_decrement]
+                 ;
+                 ]}
+
+        {:des "a-mode (global)"
+         :rules [:a-mode
+                 [:-c :!Cc] ;copy
+                 [:-v :!Cv] ;paste
+                 [:-f :!Cf] ;paste
+                 [:-o :switch_windows]
                  ;
                  ]}
 
