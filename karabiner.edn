@@ -361,38 +361,37 @@
 
         {:des "homerow movement 't'"
          :rules [:movement-mode
-                 [:##j :left_arrow]
-                 [:##k :down_arrow]
-                 [:##l :up_arrow]
-                 [:##semicolon :right_arrow]
+                 [:##j :left_arrow] ;n in colemak
+                 [:##k :down_arrow] ;e in colemak  
+                 [:##l :up_arrow] ;i in colemak
+                 [:##semicolon :right_arrow] ;o in colemak
 
-                 [:##u :!Oleft_arrow]
-                 [:##i :!Odown_arrow]
-                 [:##o :!Oup_arrow]
-                 [:##p :!Oright_arrow]
+                 [:##u :!Oleft_arrow] ;l in colemak
+                 [:##i :!Odown_arrow] ;u in colemak
+                 [:##o :!Oup_arrow] ;y in colemak
+                 [:##p :!Oright_arrow] ;semi-colon in colemak
 
-                 [:##m :!Cleft_arrow]
-                 [:##comma :!Cright_arrow]
-                 [:##period :home]
-                 [:##slash :end]
+                 [:##m :!Cleft_arrow] ;m in colemak
+                 [:##comma :home] ;, in colemak
+                 [:##period :end] ;. in colemak
+                 [:##slash :!Cright_arrow] ;/ in colemak
                  ;
                  ]}
 
         {:des "homerow shift 's'"
          :rules [:shift-mode
-                 [:##j :!Sleft_arrow]
-                 [:##k :!Sdown_arrow]
-                 [:##l :!Sup_arrow]
-                 [:##semicolon :!Sright_arrow]
+                 [:##j :!Sleft_arrow] ;n in colemak
+                 [:##k :!Sdown_arrow] ;e in colemak
+                 [:##l :!Sup_arrow] ;i in colemak
+                 [:##semicolon :!Sright_arrow] ;o in colemak
 
-                 [:##u :!OSleft_arrow]
-                 [:##i :!OSdown_arrow]
-                 [:##o :!OSup_arrow]
-                 [:##p :!OSright_arrow]
+                 [:##u :!OSleft_arrow] ;l in colemak
+                 [:##i :!OSdown_arrow] ;u in colemak
+                 [:##o :!OSup_arrow] ;y in colemak
+                 [:##p :!OSright_arrow] ;semi-colon in colemak
 
-                 [:##m :!Shome]
-                 [:##comma :!Send]
-
+                 [:##m :!Shome] ;m in colemak
+                 [:##slash :!Send] ;/ in colemak
 
                  [:left_shift :shrink_selection]
                  [:return_or_enter :insert_line_above]
