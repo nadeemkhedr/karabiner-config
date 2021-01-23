@@ -230,7 +230,7 @@
                  ;;[:left_option :left_option nil {:alone [:!Cw]}]
 
                  [:condi :brave :a-mode]
-                 [:-d :open_dev_tools]
+                 [:-i :open_dev_tools]
                  [:-n :prev_tab]
                  [:-e :next_tab]
                  [:-t :new_tab]
@@ -248,9 +248,11 @@
 
 
           [:condi :code :a-mode]
-          [:-t :!Tgrave_accent_and_tilde] ;a-t toggle terminal
+          [:-i :!Tgrave_accent_and_tilde] ;a-t toggle terminal
           [:-n :prev_code_tab]
           [:-e :next_code_tab]
+          [:-x :close_tab]
+          [:-t :!Cn] ;a-t creates an untitled file
 
           [:condi :code :r-mode] ;control key - terminal
           [:-h :!Th]
