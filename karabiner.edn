@@ -326,7 +326,7 @@
          :rules
          [:escape-mode
           [:-a :!!a] ;toggle top menubar
-          [:-d [:launch "Discord"]]
+          [:-d :f11] ;show desktop
           [:-i [:launch "iTerm"]]
           [:-c :!!c] ;open fantastical
           [:-p :!!p] ;take a screenshot with snagit
