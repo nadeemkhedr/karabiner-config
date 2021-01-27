@@ -82,7 +82,7 @@
        :switch_windows {:key :grave_accent_and_tilde :modi :command}
        :prev_app {:key :tab :modi :cs :lazy true}
        :next_app {:key :tab :modi :command :lazy true}
-
+       :reopen_tab {:key t :modi :cs} ;brave/code
 
        ;vscode
        :command_palette {:key :p :modi :command}
@@ -234,6 +234,7 @@
                  [:-n :prev_tab]
                  [:-e :next_tab]
                  [:-t :new_tab]
+                 [:-s :reopen_tab]
                  [:-r :refresh]
                  [:-x :close_tab]
                  [:-p :private_mode]
@@ -252,6 +253,7 @@
           [:-n :prev_code_tab]
           [:-e :next_code_tab]
           [:-x :close_tab]
+          [:-s :reopen_tab]
           [:-t :!Cn] ;a-t creates an untitled file
 
           [:condi :code :r-mode] ;control key - terminal
@@ -307,6 +309,7 @@
                  [:left_command [:paste "👍"]]
                  [:left_option [:paste "👎"]]
                  [:-b [:paste "🐛"]] ;bug
+                 [:-d [:paste "📚"]] ;docs
                  [:-p [:paste "🎉"]] ;tada
                  [:-l [:paste "❤️"]] ;love
                  [:-j [:paste "😂"]] ;joking
