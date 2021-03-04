@@ -88,19 +88,22 @@
        :command_palette {:key :p :modi :command}
        :go_to_file {:key :p :modi :cs}
 
-       :prev_code_tab [{:key k :modi :command} 
-                       {:key left_arrow :modi :co}]
-       :next_code_tab [{:key k :modi :command}
-                      {:key right_arrow :modi :co}]
+       :code_tab_prev [{:key k :modi :command} 
+                       {:key left_arrow :modi :co}] ;prev tab in group
+       :code_tab_next [{:key k :modi :command}
+                      {:key right_arrow :modi :co}] ;next tab in group
        ;brave
-       :next_tab {:key tab :modi :control}
        :prev_tab {:key tab :modi :ts}
-       :open_dev_tools {:key :i :modi :co} ;:!COl
-       :focus_omnibar {:key :l :modi :command}
+       :next_tab {:key tab :modi :control}
+       :tab_move_left {:key page_up :modi :ts}
+       :tab_move_right {:key page_down :modi :ts}
        :new_tab {:key t :modi :command}
        :close_tab {:key w :modi :command}
+       :open_dev_tools {:key :i :modi :co} ;:!COl
+       :focus_omnibar {:key :l :modi :command}
        :refresh {:key r :modi :command}
        :private_mode {:key n :modi :cs}
+       :browser_1pass {:key x :modi :cs}
        ;
        }
  
@@ -230,15 +233,18 @@
                  ;;[:left_option :left_option nil {:alone [:!Cw]}]
 
                  [:condi :brave :a-mode]
-                 [:-i :open_dev_tools]
                  [:-n :prev_tab]
                  [:-e :next_tab]
-                 [:-t :new_tab]
+                 [:-m :tab_move_left]
+                 [:comma :tab_move_right]
                  [:-s :reopen_tab]
+                 [:-t :new_tab]
+                 [:-l :focus_omnibar]
+                 [:-i :open_dev_tools]
                  [:-r :refresh]
                  [:-x :close_tab]
                  [:-p :private_mode]
-                 [:-l :focus_omnibar]
+                 [:-u :browser_1pass]
                  ;
                  ]}
 
@@ -250,8 +256,8 @@
 
           [:condi :code :a-mode]
           [:-i :!Tgrave_accent_and_tilde] ;a-t toggle terminal
-          [:-n :prev_code_tab]
-          [:-e :next_code_tab]
+          [:-n :code_tab_prev]
+          [:-e :code_tab_next]
           [:-x :close_tab]
           [:-s :reopen_tab]
           [:-t :!Cn] ;a-t creates an untitled file
@@ -320,13 +326,6 @@
                  ;
                  ]}
 
-        {:des "caps_lock"
-         :rules [:caps_lock-mode
-                 [:##caps_lock :##escape]
-                 ; I don't use a caps_lock key on my keyboard
-                 ;
-                 ]}
-
         {:des "escape-mode"
          :rules
          [:escape-mode
@@ -344,10 +343,18 @@
           [:comma [:launch "Messenger"]]
           [:-w [:launch "WhatsApp"]]
           [:-x :!Ch] ;hide app
+          [:-l :!!l] ;toggle 1password
           [:-n :prev_app]
           [:-e :next_app]
           ;
           ]}
+
+        {:des "caps_lock"
+         :rules [:caps_lock-mode
+                 [:##caps_lock :##escape]
+                 ; I don't use a caps_lock key on my keyboard
+                 ;
+                 ]}
 
 
         {:des "delete 'n'"
@@ -362,7 +369,7 @@
                  ;
                  ]}
 
-        {:des "homerow movement 't'"
+        {:des "move 't'"
          :rules [:movement-mode
                  [:##j :left_arrow] ;n in colemak
                  [:##k :down_arrow] ;e in colemak  
@@ -381,12 +388,13 @@
                  ;
                  ]}
 
-        {:des "homerow shift 's'"
+        {:des "shift 's'"
          :rules [:shift-mode
                  [:##j :!Sleft_arrow] ;n in colemak
                  [:##k :!Sdown_arrow] ;e in colemak
                  [:##l :!Sup_arrow] ;i in colemak
                  [:##semicolon :!Sright_arrow] ;o in colemak
+                 [:##h :!Ca] ;h in colemak
 
                  [:##u :!OSleft_arrow] ;l in colemak
                  [:##i :!OSdown_arrow] ;u in colemak
@@ -486,7 +494,7 @@
          :rules [:a-mode
                  [:-c :!Cc] ;copy
                  [:-v :!Cv] ;paste
-                 [:-f :!Cf] ;paste
+                 [:-f :!Cf] ;find
                  [:-o :switch_windows]
                  ;
                  ]}
